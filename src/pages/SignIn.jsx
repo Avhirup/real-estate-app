@@ -13,7 +13,23 @@ import {
   Typography,
 } from '@material-tailwind/react';
 
+import Divider from '@mui/material/Divider';
+import Chip from '@mui/material/Chip';
+import GoogleOAuth from '../components/OAuths/GoogleOAuth';
+import { ImAppleinc } from 'react-icons/im';
+import { RiFacebookBoxFill } from 'react-icons/ri';
+
+//! --------------------- Trying to implement Private Route -------------------
+import { useAuthStatus } from '../Hooks/useAuthStatus';
+import ProfileLoading from '../skeleton/ProfileLoading';
+import { Navigate } from 'react-router-dom';
+//! --------------------- Trying to implement Private Route -------------------
+
 export default function SignIn() {
+  //! --------------------- Trying to implement Private Route -------------------
+  const { loggedIn, checkingStatus } = useAuthStatus();
+  //! --------------------- Trying to implement Private Route -------------------
+
   //* ***************************** TESTING PURPOSE OF WORKING NAVBAR****************************
   const { value, setValue } = useContext(NavContext);
   //* ***************************** TESTING PURPOSE OF WORKING NAVBAR****************************
@@ -60,6 +76,14 @@ export default function SignIn() {
     }
   };
 
+  //! --------------------- Trying to implement Private Route -------------------
+  if (checkingStatus) {
+    return <ProfileLoading />;
+  }
+  if (loggedIn) return <Navigate to="/profile" />;
+  else <Navigate to="/sign-in" />;
+  //! --------------------- Trying to implement Private Route -------------------
+
   return (
     <div className="container">
       <Card color="transparent" shadow={false}>
@@ -70,7 +94,7 @@ export default function SignIn() {
           Welcome! Enter your details to log in.
         </Typography>
         <form
-          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+          className="mt-8 mb-6 w-80 max-w-screen-lg sm:w-96"
           onSubmit={onSubmit}
         >
           <div className="mb-1 flex flex-col gap-6">
@@ -140,7 +164,7 @@ export default function SignIn() {
             </Link>
           </Typography>
           <Typography color="gray" className="mt-4 text-center font-normal">
-            Want to create a new account?{' '}
+            Create new account{' '}
             <Link
               to="/sign-up"
               className="font-medium text-gray-900"
@@ -150,6 +174,29 @@ export default function SignIn() {
             </Link>
           </Typography>
         </form>
+        <Divider style={{ marginBottom: '.5rem' }}>
+          <Chip label="or" size="large" />
+        </Divider>
+        <div
+          className="container mt-4 mb-4"
+          style={{ display: 'flex', flexDirection: 'row', gap: '3rem' }}
+        >
+          <GoogleOAuth />
+          <RiFacebookBoxFill
+            onClick={() => {
+              toast('Feature coming soon');
+            }}
+            size={'2.5rem'}
+            style={{ cursor: 'pointer', color: '#3b5998' }}
+          />
+          <ImAppleinc
+            onClick={() => {
+              toast('Feature coming soon');
+            }}
+            size={'2.1rem'}
+            style={{ cursor: 'pointer', color: '#A2AAAD' }}
+          />
+        </div>
       </Card>
     </div>
   );

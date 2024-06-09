@@ -20,7 +20,23 @@ import {
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase.config';
 
+import Divider from '@mui/material/Divider';
+import Chip from '@mui/material/Chip';
+import GoogleOAuth from '../components/OAuths/GoogleOAuth';
+import { ImAppleinc } from 'react-icons/im';
+import { RiFacebookBoxFill } from 'react-icons/ri';
+
+//! --------------------- Trying to implement Private Route -------------------
+import { useAuthStatus } from '../Hooks/useAuthStatus';
+import ProfileLoading from '../skeleton/ProfileLoading';
+import { Navigate } from 'react-router-dom';
+//! --------------------- Trying to implement Private Route -------------------
+
 export default function SignUp() {
+  //! --------------------- Trying to implement Private Route -------------------
+  const { loggedIn, checkingStatus } = useAuthStatus();
+  //! --------------------- Trying to implement Private Route -------------------
+
   //* ***************************** TESTING PURPOSE OF WORKING NAVBAR****************************
   const { value, setValue } = useContext(NavContext);
   //* ***************************** TESTING PURPOSE OF WORKING NAVBAR****************************
@@ -61,7 +77,7 @@ export default function SignUp() {
       updateProfile(auth.currentUser, {
         displayName: name,
       });
-      toast.success('Successfully registered; please sign in');
+      toast.success('Account created successfully');
       // ---------------- ---------------------------------- ------------------
 
       // ------------------ Storing the user information (name, email) in DB --------------
@@ -70,8 +86,8 @@ export default function SignUp() {
       formDataCopy.timeStamp = serverTimestamp();
       await setDoc(doc(db, 'users', user.uid), formDataCopy);
       // ------------------ ------------------------------------------------ --------------
-      setValue(2);
-      navigate('/sign-in');
+      setValue(0);
+      navigate('/');
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') {
         toast.error('User already exists');
@@ -86,9 +102,17 @@ export default function SignUp() {
       } else {
         toast.error('Something went wrong');
       }
-      console.log(err.code);
+      // console.log(err.code);
     }
   };
+
+  //! --------------------- Trying to implement Private Route -------------------
+  if (checkingStatus) {
+    return <ProfileLoading />;
+  }
+  if (loggedIn) return <Navigate to="/profile" />;
+  else <Navigate to="/sign-in" />;
+  //! --------------------- Trying to implement Private Route -------------------
 
   return (
     <div className="container">
@@ -100,7 +124,7 @@ export default function SignUp() {
           Nice to meet you! Enter your details to register.
         </Typography>
         <form
-          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+          className="mt-8 mb-6 w-80 max-w-screen-lg sm:w-96"
           onSubmit={onSubmit}
         >
           <div className="mb-1 flex flex-col gap-6">
@@ -175,18 +199,11 @@ export default function SignUp() {
             containerProps={{ className: '-ml-2.5' }}
             onClick={() => setShowPassword((prevState) => !prevState)}
           />
-          <Button className="mt-5" fullWidth type="submit">
+          <Button className="mt-5 mb-7" fullWidth type="submit">
             sign up
           </Button>
           <Typography color="gray" className="mt-4 text-center font-normal">
             Already have an account?{' '}
-            {/* <a
-              className="font-medium text-gray-900"
-              onClick={() => navigate('/sign-in')}
-              style={{ cursor: 'pointer', textDecoration: 'underline' }}
-            >
-              Sign In
-            </a> */}
             <Link
               to="/sign-in"
               className="font-medium text-gray-900"
@@ -196,6 +213,29 @@ export default function SignUp() {
             </Link>
           </Typography>
         </form>
+        <Divider style={{ marginBottom: '.5rem' }}>
+          <Chip label="or" size="large" />
+        </Divider>
+        <div
+          className="container mt-4 mb-4"
+          style={{ display: 'flex', flexDirection: 'row', gap: '3rem' }}
+        >
+          <GoogleOAuth />
+          <RiFacebookBoxFill
+            onClick={() => {
+              toast('Feature coming soon');
+            }}
+            size={'2.5rem'}
+            style={{ cursor: 'pointer', color: '#3b5998' }}
+          />
+          <ImAppleinc
+            onClick={() => {
+              toast('Feature coming soon');
+            }}
+            size={'2.1rem'}
+            style={{ cursor: 'pointer', color: '#A2AAAD' }}
+          />
+        </div>
       </Card>
     </div>
   );
