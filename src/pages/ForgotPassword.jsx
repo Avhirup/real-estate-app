@@ -59,7 +59,7 @@ export default function ForgotPassword() {
   //! --------------------- Trying to implement Private Route -------------------
 
   return (
-    <div className="container">
+    <div className="container  mt-10 mb-5">
       <Card color="transparent" shadow={false}>
         <Typography variant="h4" color="blue-gray">
           Forgot Password

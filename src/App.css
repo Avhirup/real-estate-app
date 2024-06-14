@@ -1,11 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Slab:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@300..900&display=swap');
+
 body {
     /* min-height: 100vh; */
     /* border: 1px solid red; */
     display: flex;
     justify-content: center;
-    /* align-items: center; */
+    align-items: center;
 }
 
+/* -------------------- Explore page --------------------- */
+.front-heading {
+    font-family: "Josefin Slab", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 1.4rem;
+}
+
+.special-heading {
+    /* font-family: "Sansita Swashed", system-ui;
+    font-optical-sizing: auto;
+    font-style: normal; */
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+/* -------------------- Explore page --------------------- */
+
+/* -------------------- Every component's parent class ------------------- */
 .container {
     /* border: 2px solid blue; */
     margin-top: 1rem;
@@ -14,4 +37,39 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
+    /* width: 100% !important; */
+}
+
+/* -------------------- Every component's parent class ------------------- */
+
+
+.categoryHeading {
+    width: 100%;
+    display: flex;
+    align-items: start;
+}
+
+.exploreMain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: flex-start;
+    max-width: 100vw;
+    /* border: 1px solid red; */
+}
+
+.exploreCategories {
+    /* border: 1px solid black; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+
+@media (max-width: 480px) {
+    .exploreCategories {
+        flex-direction: column;
+    }
 }

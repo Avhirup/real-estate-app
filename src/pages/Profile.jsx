@@ -9,6 +9,9 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import CreateTwoToneIcon from '@mui/icons-material/CreateTwoTone';
 import DoneOutlineTwoToneIcon from '@mui/icons-material/DoneOutlineTwoTone';
 import '../pages css/Profile.css';
+import { Button as BTN } from '@material-tailwind/react';
+import { IoAddCircleOutline } from 'react-icons/io5';
+import Tooltip from '@mui/material/Tooltip';
 import { toast } from 'react-toastify';
 
 export default function Profile() {
@@ -61,7 +64,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="profile">
+    <div className="profile container">
       <header className="profileHeader">
         <p className="pageHeader">Your Profile</p>
         {/* <button type="button" className="logOut" onClick={onLogout}>
@@ -89,23 +92,27 @@ export default function Profile() {
             }}
           >
             {changeDetails ? (
-              <Button
-                style={{ backgroundColor: 'green', borderColor: 'green' }}
-                variant="contained"
-                size="small"
-                startIcon={<DoneOutlineTwoToneIcon />}
-              >
-                Save
-              </Button>
+              <Tooltip title="Save your details">
+                <Button
+                  style={{ backgroundColor: 'green', borderColor: 'green' }}
+                  variant="contained"
+                  size="small"
+                  startIcon={<DoneOutlineTwoToneIcon />}
+                >
+                  Save
+                </Button>
+              </Tooltip>
             ) : (
-              <Button
-                style={{ color: 'black', borderColor: 'black' }}
-                variant="outlined"
-                size="small"
-                endIcon={<CreateTwoToneIcon />}
-              >
-                Edit
-              </Button>
+              <Tooltip title="Edit your details">
+                <Button
+                  style={{ color: 'black', borderColor: 'black' }}
+                  variant="outlined"
+                  size="small"
+                  endIcon={<CreateTwoToneIcon />}
+                >
+                  Edit
+                </Button>
+              </Tooltip>
             )}
           </p>
         </div>
@@ -129,6 +136,13 @@ export default function Profile() {
             />
           </form>
         </div>
+        <Link to={'/create-listing'}>
+          <Tooltip title="List your property for sale or rental">
+            <BTN className="flex items-center gap-3">
+              <IoAddCircleOutline size={20} /> Add
+            </BTN>
+          </Tooltip>
+        </Link>
       </main>
     </div>
   );

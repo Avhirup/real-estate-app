@@ -38,7 +38,7 @@ export default function SignUp() {
   //! --------------------- Trying to implement Private Route -------------------
 
   //* ***************************** TESTING PURPOSE OF WORKING NAVBAR****************************
-  const { value, setValue } = useContext(NavContext);
+  // const { value, setValue } = useContext(NavContext);
   //* ***************************** TESTING PURPOSE OF WORKING NAVBAR****************************
   const navigate = useNavigate();
 
@@ -86,7 +86,7 @@ export default function SignUp() {
       formDataCopy.timeStamp = serverTimestamp();
       await setDoc(doc(db, 'users', user.uid), formDataCopy);
       // ------------------ ------------------------------------------------ --------------
-      setValue(0);
+      // setValue(0);
       navigate('/');
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') {
@@ -115,7 +115,7 @@ export default function SignUp() {
   //! --------------------- Trying to implement Private Route -------------------
 
   return (
-    <div className="container">
+    <div className="container mt-10 mb-5">
       <Card color="transparent" shadow={false}>
         <Typography variant="h4" color="blue-gray">
           Sign Up
@@ -217,8 +217,14 @@ export default function SignUp() {
           <Chip label="or" size="large" />
         </Divider>
         <div
-          className="container mt-4 mb-4"
-          style={{ display: 'flex', flexDirection: 'row', gap: '3rem' }}
+          className="mt-4 mb-4"
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '2.5rem',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
         >
           <GoogleOAuth />
           <RiFacebookBoxFill
