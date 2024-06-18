@@ -16,11 +16,14 @@
     "@mui/icons-material": "^5.15.19",
     "@mui/material": "^5.15.19",
     "firebase": "^10.12.2",
+    "leaflet": "^1.9.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.2.1",
+    "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.23.1",
     "react-toastify": "^10.0.5",
+    "swiper": "^11.1.4",
     "uuid": "^10.0.0"
   },
   "devDependencies": {

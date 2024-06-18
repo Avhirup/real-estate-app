@@ -15,6 +15,7 @@ header {
     justify-content: space-between;
     padding: 1rem;
     margin-top: 1rem;
+    padding-bottom: 0;
 }
 
 main {
@@ -46,6 +47,19 @@ main {
     border-radius: .5rem;
     background-color: white;
     padding: 1rem;
+}
+
+.profileName {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+}
+
+.profileNameActive {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
 }
 
 @media (max-width: 480px) {

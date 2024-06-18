@@ -17,6 +17,7 @@ import Button from '@mui/material/Button';
 //! ------------------ My Code ------------------
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
+import Logo1 from './Logo1';
 //! ------------------ My Code ------------------
 
 const drawerWidth = 240;
@@ -59,7 +60,7 @@ export default function UpperNav(props) {
         className="flex align-middle justify-center"
       >
         <Link to="/" className="cursor-pointer">
-          <Logo />
+          <Logo1 />
         </Link>
       </Typography>
       <Divider />

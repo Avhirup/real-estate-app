@@ -5,6 +5,7 @@ import { NavContext } from '../context/NavContex';
 // *********************************TESTING PURPOSE***************************************
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import BackdropLoading from '../skeleton/BackdropLoading';
 import {
   Card,
   Input,
@@ -19,20 +20,25 @@ import GoogleOAuth from '../components/OAuths/GoogleOAuth';
 import { ImAppleinc } from 'react-icons/im';
 import { RiFacebookBoxFill } from 'react-icons/ri';
 
-//! --------------------- Trying to implement Private Route -------------------
+//! --------------------- Implementing Private Route -------------------
 import { useAuthStatus } from '../Hooks/useAuthStatus';
 import ProfileLoading from '../skeleton/ProfileLoading';
 import { Navigate } from 'react-router-dom';
-//! --------------------- Trying to implement Private Route -------------------
+//! --------------------- Implementing Private Route -------------------
 
 export default function SignIn() {
-  //! --------------------- Trying to implement Private Route -------------------
+  //! --------------------- Implementing Private Route -------------------
   const { loggedIn, checkingStatus } = useAuthStatus();
-  //! --------------------- Trying to implement Private Route -------------------
+  //! --------------------- Implementing Private Route -------------------
 
   //* ***************************** TESTING PURPOSE OF WORKING NAVBAR****************************
   // const { value, setValue } = useContext(NavContext);
   //* ***************************** TESTING PURPOSE OF WORKING NAVBAR****************************
+
+  // ?----------------- Loading State --------------------
+  const [loading, setLoading] = useState(false);
+  // ?----------------- Loading State --------------------
+
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -52,6 +58,7 @@ export default function SignIn() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const auth = getAuth();
       const userCredential = await signInWithEmailAndPassword(
@@ -73,6 +80,8 @@ export default function SignIn() {
         toast.error('Bad request');
       }
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,6 +95,7 @@ export default function SignIn() {
 
   return (
     <div className="container  mt-10 mb-5">
+      {loading && <BackdropLoading />}
       <Card color="transparent" shadow={false}>
         <Typography variant="h4" color="blue-gray">
           Sign In

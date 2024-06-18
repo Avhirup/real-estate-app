@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 // *********************************TESTING PURPOSE***************************************
 import { NavContext } from '../context/NavContex';
 // *********************************TESTING PURPOSE***************************************
+import BackdropLoading from '../skeleton/BackdropLoading';
 import {
   Card,
   Input,
@@ -33,6 +34,10 @@ import { Navigate } from 'react-router-dom';
 //! --------------------- Trying to implement Private Route -------------------
 
 export default function SignUp() {
+  // ?----------------- Loading State --------------------
+  const [loading, setLoading] = useState(false);
+  // ?----------------- Loading State --------------------
+
   //! --------------------- Trying to implement Private Route -------------------
   const { loggedIn, checkingStatus } = useAuthStatus();
   //! --------------------- Trying to implement Private Route -------------------
@@ -60,6 +65,7 @@ export default function SignUp() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       // ---------------- Storing the email password in auth ------------------
       const auth = getAuth();
@@ -81,7 +87,7 @@ export default function SignUp() {
       // ---------------- ---------------------------------- ------------------
 
       // ------------------ Storing the user information (name, email) in DB --------------
-      const formDataCopy = { ...formData };
+      const formDataCopy = { ...formData, phoneNumber: '', description: '' };
       delete formDataCopy.password;
       formDataCopy.timeStamp = serverTimestamp();
       await setDoc(doc(db, 'users', user.uid), formDataCopy);
@@ -103,6 +109,8 @@ export default function SignUp() {
         toast.error('Something went wrong');
       }
       // console.log(err.code);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -116,6 +124,7 @@ export default function SignUp() {
 
   return (
     <div className="container mt-10 mb-5">
+      {loading && <BackdropLoading />}
       <Card color="transparent" shadow={false}>
         <Typography variant="h4" color="blue-gray">
           Sign Up

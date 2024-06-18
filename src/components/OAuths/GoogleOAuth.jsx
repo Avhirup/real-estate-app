@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { FcGoogle } from 'react-icons/fc';
 
 export default function GoogleOAuth() {
-  const nagivate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const onGoogleClick = async () => {
@@ -20,18 +20,27 @@ export default function GoogleOAuth() {
       const docRef = doc(db, 'users', user.uid);
       const docSnap = await getDoc(docRef);
       // If user do not exists then adding his/her data into firestore db (into 'users' collection)
-      if (!docSnap.exists) {
-        await setDoc(doc(db, 'users', user.uid), {
-          name: user.displayName,
-          email: user.email,
-          timestamp: serverTimestamp(),
-        });
+      if (!docSnap.exists()) {
+        try {
+          await setDoc(doc(db, 'users', user.uid), {
+            name: user.displayName,
+            email: user.email,
+            description: '',
+            phoneNumber: '',
+            timestamp: serverTimestamp(),
+          });
+          toast.success('Authentication successful');
+        } catch (err) {
+          console.error('Error adding user to Firestore:', err);
+          toast.error('Error saving user data');
+          return;
+        }
       }
 
       // after successfully register, navigate to home page
-      nagivate('/');
+      navigate('/');
     } catch (err) {
-      console.log(err);
+      console.log('Google sign-in error:', err);
       toast.error('Could not authorize with Google');
       setTimeout(() => {
         toast('Please try with email and password');

@@ -41,6 +41,10 @@ export default function CreateListing() {
     discountedPrice: 0,
     images: {},
     wifi: false,
+    ac: false,
+    purpose: 'Personal home',
+    pet: false,
+    listedBy: 'Owner',
     geolocation: {},
   });
 
@@ -59,6 +63,10 @@ export default function CreateListing() {
     discountedPrice,
     images,
     wifi,
+    ac,
+    purpose,
+    pet,
+    listedBy,
   } = formData;
 
   const auth = getAuth();
@@ -115,7 +123,7 @@ export default function CreateListing() {
       }
       // ! ------------- Setting up values ------------------
     } catch (err) {
-      // console.log(err);
+      console.log(err);
       toast.error('Invalid address');
       toast.error('Cannot create the post');
       return;
@@ -216,7 +224,7 @@ export default function CreateListing() {
     !formDataCopy.offer && delete formDataCopy.discountedPrice;
 
     const docRef = await addDoc(collection(db, 'listings'), formDataCopy);
-    toast.success('The post created successfully');
+    toast.success('Post created successfully');
     setLoading(false);
     navigate(`/category/${formDataCopy.type}/${docRef.id}`);
   };
@@ -254,7 +262,7 @@ export default function CreateListing() {
     if (_isMounted) {
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          setFormData({ ...formData, useRef: user.uid });
+          setFormData({ ...formData, userRef: user.uid });
         } else {
           navigate('/sign-in');
         }
@@ -518,6 +526,86 @@ export default function CreateListing() {
                 </FormControl>
               </div>
 
+              {/* ------------------ AC & PURPOSE ---------------- */}
+              <div className="flex space-x-4">
+                {/* ---------- AC ----------- */}
+                <FormControl
+                  fullWidth
+                  className="w-1/2"
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      color: '#212121',
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#212121',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#212121',
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: '#212121',
+                      '&.Mui-focused': {
+                        color: '#212121',
+                      },
+                    },
+                  }}
+                >
+                  <InputLabel id="isAC">AC available</InputLabel>
+                  <Select
+                    id="isAC"
+                    labelId="isAC"
+                    name="ac"
+                    value={ac}
+                    label="AC available"
+                    onChange={onChange}
+                  >
+                    <MenuItem value={true}>Yes</MenuItem>
+                    <MenuItem value={false}>No</MenuItem>
+                  </Select>
+                </FormControl>
+                {/* ---------- PURPOSE ----------- */}
+                <FormControl
+                  fullWidth
+                  className="w-1/2"
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      color: '#212121',
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#212121',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#212121',
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: '#212121',
+                      '&.Mui-focused': {
+                        color: '#212121',
+                      },
+                    },
+                  }}
+                >
+                  <InputLabel id="purposeType">
+                    {type === 'rent' ? 'Renting ' : 'Selling '}as
+                  </InputLabel>
+                  <Select
+                    id="purposeType"
+                    labelId="purposeType"
+                    name="purpose"
+                    value={purpose}
+                    label={`${type === 'rent' ? 'Renting ' : 'Selling '}as`}
+                    onChange={onChange}
+                  >
+                    <MenuItem value="Personal home">Personal home</MenuItem>
+                    <MenuItem value="Flat">Flat</MenuItem>
+                    <MenuItem value="Office space">Office space</MenuItem>
+                    <MenuItem value="Commercial use">Commercial use</MenuItem>
+                    <MenuItem value="Studio">Studio</MenuItem>
+                    <MenuItem value="Land only">Land only</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+
               {/* ------------------ WIFI & PARKING ---------------- */}
               <div className="flex space-x-4">
                 {/* ---------- WIFI ----------- */}
@@ -667,6 +755,80 @@ export default function CreateListing() {
                 </FormControl>
               </div>
 
+              {/* ------------------ ANIMALS & LISTED BY ---------------- */}
+              <div className="flex space-x-4">
+                {/* ---------- ANIMALS ----------- */}
+                <FormControl
+                  fullWidth
+                  className="w-1/2"
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      color: '#212121',
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#212121',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#212121',
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: '#212121',
+                      '&.Mui-focused': {
+                        color: '#212121',
+                      },
+                    },
+                  }}
+                >
+                  <InputLabel id="isPet">Pets allowed</InputLabel>
+                  <Select
+                    id="isPet"
+                    labelId="isPet"
+                    name="pet"
+                    value={pet}
+                    label="Pets allowed"
+                    onChange={onChange}
+                  >
+                    <MenuItem value={true}>Yes</MenuItem>
+                    <MenuItem value={false}>No</MenuItem>
+                  </Select>
+                </FormControl>
+                {/* ---------- LISTED BY ----------- */}
+                <FormControl
+                  fullWidth
+                  className="w-1/2"
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      color: '#212121',
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#212121',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#212121',
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: '#212121',
+                      '&.Mui-focused': {
+                        color: '#212121',
+                      },
+                    },
+                  }}
+                >
+                  <InputLabel id="listingAs">Listed By</InputLabel>
+                  <Select
+                    id="listedBy"
+                    labelId="listedBy"
+                    name="listedBy"
+                    value={listedBy}
+                    label="Listed by"
+                    onChange={onChange}
+                  >
+                    <MenuItem value="Owner">Owner</MenuItem>
+                    <MenuItem value="Broker">Broker</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+
               {/* ------------------ ADDRESS ---------------- */}
               {/* <TextField
                 label="Address"
@@ -730,7 +892,7 @@ export default function CreateListing() {
                   }}
                   required
                   inputProps={{
-                    maxLength: 80,
+                    maxLength: 200,
                     minLength: 10,
                   }}
                 />

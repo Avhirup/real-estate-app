@@ -49,7 +49,15 @@ import { MdOutlineDiscount } from 'react-icons/md';
 //------------------ verified --------------------
 import { TbRosetteDiscountCheckFilled } from 'react-icons/tb';
 
-export default function ListingItems({ listing, id, onDelete }) {
+//------------------ ANIMAL --------------------
+import { FaDog } from 'react-icons/fa6';
+
+export default function ListingItems({
+  listing,
+  id,
+  onDelete,
+  renderedInProfilePage = false,
+}) {
   let discountedPrice = '0';
   listing.offer
     ? (discountedPrice = listing.discountedPrice
@@ -62,8 +70,8 @@ export default function ListingItems({ listing, id, onDelete }) {
   console.log(listing);
   return (
     <li className="categoryListing">
-      <Card className="w-full max-w-[26rem] shadow-lg">
-        <CardHeader floated={false} color="blue-gray">
+      <Card className="w-full max-w-[26rem] rounded-md shadow-lg">
+        <CardHeader floated={false} color="blue-gray" className="rounded-md">
           <div className="w-[300px] h-[200px]">
             <img
               src={listing.imageUrls[0]}
@@ -94,87 +102,101 @@ export default function ListingItems({ listing, id, onDelete }) {
             <span className="text-gray-900 font-medium">Address:</span>{' '}
             {listing.location}
           </Typography>
-          <div className="group mt-6 inline-flex flex-wrap items-center gap-3">
-            {/* ------------ PRICE ------------ */}
-            <Tooltip
-              content={`₹${
-                // eslint-disable-next-line react/prop-types
-                listing.offer ? discountedPrice : regularPrice
-              } ${listing.type === 'rent' ? '/ Month' : ''}`}
-            >
-              <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-                {/* <LiaMoneyBillWaveSolid /> */}
-                <BsCashCoin />
-              </span>
-            </Tooltip>
-            {/* ------------ BEDROOMS ------------ */}
-            <Tooltip content={`${listing.bedrooms} bedrooms`}>
-              <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-                {listing.bedrooms > 0 ? <TbBed /> : <TbBedOff />}
-              </span>
-            </Tooltip>
-            {/* ------------ BATHROOMS ------------ */}
-            <Tooltip content={`${listing.bathrooms} bathrooms`}>
-              <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-                {listing.bedrooms > 0 ? <LiaBathSolid /> : <TbBathOff />}
-              </span>
-            </Tooltip>
-            {/* ------------ WIFI ------------ */}
-            <Tooltip content={`${listing.wifi ? 'Free' : 'No free'} wifi`}>
-              <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-                {listing.wifi ? <LuWifi /> : <FiWifiOff />}
-              </span>
-            </Tooltip>
-            {/* ------------ FURNISHED ------------ */}
-            <Tooltip
-              content={`${listing.furnished ? 'Furnished' : 'Not furnished'}`}
-            >
-              <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-                {listing.furnished ? <TbArmchair2 /> : <TbArmchair2Off />}
-              </span>
-            </Tooltip>
-            {/* ------------ PARKING ------------ */}
-            <Tooltip
-              content={`${
-                listing.parking
-                  ? 'Parking area available'
-                  : 'Parking area not available'
-              }`}
-            >
-              <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-                {listing.parking ? <LuParkingCircle /> : <BsSignNoParking />}
-              </span>
-            </Tooltip>
-            {/* ------------ DISCOUNT ------------ */}
-            {listing.offer && (
+          {!renderedInProfilePage && (
+            <div className="group mt-6 inline-flex flex-wrap items-center gap-3">
+              {/* ------------ PRICE ------------ */}
               <Tooltip
-                content={
-                  <>
-                    Discounted Price{' '}
-                    <span className="line-through">{`₹${regularPrice}`}</span>{' '}
-                    <span>{`₹${discountedPrice}`}</span>
-                  </>
-                }
+                content={`₹${
+                  // eslint-disable-next-line react/prop-types
+                  listing.offer ? discountedPrice : regularPrice
+                } ${listing.type === 'rent' ? '/ Month' : ''}`}
               >
                 <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-                  <MdOutlineDiscount />
+                  {/* <LiaMoneyBillWaveSolid /> */}
+                  <BsCashCoin />
                 </span>
               </Tooltip>
-            )}
-            {/* ------------ VERIFIED ------------ */}
-            {listing.verified && (
-              <Tooltip content="Verified Post">
+              {/* ------------ BEDROOMS ------------ */}
+              <Tooltip content={`${listing.bedrooms} bedrooms`}>
                 <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
-                  <TbRosetteDiscountCheckFilled />
+                  {listing.bedrooms > 0 ? <TbBed /> : <TbBedOff />}
                 </span>
               </Tooltip>
-            )}
-          </div>
+              {/* ------------ BATHROOMS ------------ */}
+              <Tooltip content={`${listing.bathrooms} bathrooms`}>
+                <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+                  {listing.bedrooms > 0 ? <LiaBathSolid /> : <TbBathOff />}
+                </span>
+              </Tooltip>
+              {/* ------------ WIFI ------------ */}
+              <Tooltip content={`${listing.wifi ? 'Free' : 'No free'} wifi`}>
+                <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+                  {listing.wifi ? <LuWifi /> : <FiWifiOff />}
+                </span>
+              </Tooltip>
+              {/* ------------ FURNISHED ------------ */}
+              <Tooltip
+                content={`${listing.furnished ? 'Furnished' : 'Not furnished'}`}
+              >
+                <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+                  {listing.furnished ? <TbArmchair2 /> : <TbArmchair2Off />}
+                </span>
+              </Tooltip>
+              {/* ------------ PET ------------ */}
+              {listing.pet && (
+                <Tooltip
+                  content={`${
+                    listing.pet ? 'Pets allowed' : 'Pets not allowed '
+                  }`}
+                >
+                  <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+                    <FaDog />
+                  </span>
+                </Tooltip>
+              )}
+              {/* ------------ PARKING ------------ */}
+              <Tooltip
+                content={`${
+                  listing.parking
+                    ? 'Parking area available'
+                    : 'Parking area not available'
+                }`}
+              >
+                <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+                  {listing.parking ? <LuParkingCircle /> : <BsSignNoParking />}
+                </span>
+              </Tooltip>
+              {/* ------------ DISCOUNT ------------ */}
+              {listing.offer && (
+                <Tooltip
+                  content={
+                    <>
+                      Discounted Price{' '}
+                      <span className="line-through">{`₹${regularPrice}`}</span>{' '}
+                      <span>{`₹${discountedPrice}`}</span>
+                    </>
+                  }
+                >
+                  <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+                    <MdOutlineDiscount />
+                  </span>
+                </Tooltip>
+              )}
+              {/* ------------ VERIFIED ------------ */}
+              {listing.verified && (
+                <Tooltip content="Verified Post">
+                  <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
+                    <TbRosetteDiscountCheckFilled />
+                  </span>
+                </Tooltip>
+              )}
+            </div>
+          )}
         </CardBody>
         <CardFooter className="pt-3">
           <Link to={`/category/${listing.type}/${id}`}>
             <Button size="lg" fullWidth={true}>
-              Reserve
+              {renderedInProfilePage ? 'Details' : 'Reserve'}
             </Button>
           </Link>
         </CardFooter>

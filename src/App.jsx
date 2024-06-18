@@ -11,6 +11,7 @@ import SignUp from './pages/SignUp';
 import ForgotPassword from './pages/ForgotPassword';
 import CreateListing from './pages/CreateListing';
 import Post from './pages/Post';
+import Contact from './pages/Contact';
 import Navbar from './components/Navbar';
 import './App.css';
 
@@ -18,6 +19,7 @@ import './App.css';
 import { NavProvider } from './context/NavContex';
 import FooterNav from './components/navbars/FooterNav';
 import UpperNav from './components/UpperNav';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -37,6 +39,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/create-listing" element={<CreateListing />} />
           <Route path="/category/:categoryName/:listingId" element={<Post />} />
+          <Route path="/contact/:landlordId" element={<Contact />} />
         </Routes>
         {/* <FooterNav /> */}
       </Router>
@@ -53,6 +56,7 @@ function App() {
         theme="light"
         transition:Bounce
       />
+      <Footer />
       {/* </NavProvider> */}
     </>
   );

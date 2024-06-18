@@ -1,22 +1,27 @@
 import { Link } from 'react-router-dom';
+import Slider from '../components/Slider';
 import { Typography } from '@material-tailwind/react';
 import { CategoryCard } from '../components/categories/CategoryCard';
 export default function Explore() {
   return (
     <div className="explore container ">
       <header className="exploreHeader">
-        {/* <Typography variant="h5" color="blue-gray">
-        Welcome to PropertyEase, where you can get your dream property at your
-        ease.
-        </Typography> */}
-        <h2 className="front-heading">
+        <Typography variant="h5" color="blue-gray">
+          Welcome to <span className="special-heading">PropertyEase</span>,
+          where you can get your dream property at your ease.
+        </Typography>
+        {/* <h2 className="front-heading">
           Welcome to <span className="special-heading">PropertyEase</span>,
           where you get your dream property at your ease.
-        </h2>
+        </h2> */}
       </header>
       <main className="exploreMain">
         {/* slider here */}
-        <div className="categoryHeading">
+        <div className="explore-slider">
+          <Slider />
+        </div>
+        {/* slider here */}
+        <div className="categoryHeading mt-12">
           <p className="mb-4 text-xl font-bold">Categories</p>
         </div>
         <div className="exploreCategories">
