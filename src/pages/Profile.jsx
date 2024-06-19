@@ -74,6 +74,14 @@ export default function Profile() {
     try {
       // If name is updated
       if (auth.currentUser.displayName !== name) {
+        if (name === '') {
+          toast.warning('Name cannot be empty');
+          setTimeout(() => {
+            toast.error('Cannot update your profile name');
+          }, 1200);
+
+          return;
+        }
         // Update display name in indexDB
         await updateProfile(auth.currentUser, {
           displayName: name,
@@ -84,11 +92,20 @@ export default function Profile() {
         await updateDoc(userRef, {
           name,
         });
-        toast.success('Profile details successfully changed');
+        toast.success('Profile name updated successfully');
       }
 
       // If phone number is updated
       if (orgPhoneNumber !== phoneNumber) {
+        // phone number validation
+        if (phoneNumber === '' || phoneNumber.length !== 10) {
+          toast.warning('Phone number should consist of ten digits');
+          setTimeout(() => {
+            toast.error('Cannot update your phone number');
+          }, 1200);
+
+          return;
+        }
         // Update in Firestore
         const userRef = doc(db, 'users', auth.currentUser.uid);
         await updateDoc(userRef, {
