@@ -219,6 +219,12 @@ export default function Profile() {
   };
   //! ------------- onDelete function to delete a listing ----------------
 
+  //! ------------- onEdit function to edit a listing ----------------
+  const onEdit = async (listingId) => {
+    navigate(`/edit-listing/${listingId}`);
+  };
+  //! ------------- onEdit function to edit a listing ----------------
+
   if (loading) {
     return (
       <div className="container">
@@ -370,6 +376,7 @@ export default function Profile() {
                   id={listing.id}
                   renderedInProfilePage={true}
                   onDelete={() => onDelete(listing.id)}
+                  onEdit={() => onEdit(listing.id)}
                 />
               ))}
             </ul>

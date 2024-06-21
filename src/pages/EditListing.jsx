@@ -7,8 +7,8 @@ import {
   getDownloadURL,
 } from 'firebase/storage';
 import { db } from '../firebase.config';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom';
+import { doc, updateDoc, getDoc, serverTimestamp } from 'firebase/firestore';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { v4 as uuidv4 } from 'uuid';
 import { Card, Button, Typography } from '@material-tailwind/react';
@@ -20,13 +20,17 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { ButtonLoading } from '../skeleton/ButtonLoading';
+import BackdropLoading from '../skeleton/BackdropLoading';
 
-export default function CreateListing() {
+export default function EditListing() {
   // !----------------- API Key ------------------
   const geoCodingApiKey = import.meta.env.VITE_GEOCODE_API_KEY;
   // !----------------- API Key ------------------
 
   const [loading, setLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(false);
+
+  const [listing, setListing] = useState(null);
 
   const [formData, setFormData] = useState({
     type: 'rent',
@@ -72,6 +76,7 @@ export default function CreateListing() {
 
   const auth = getAuth();
   const navigate = useNavigate();
+  const params = useParams();
   const _isMounted = useRef(true);
 
   const onSubmit = async (e) => {
@@ -224,8 +229,11 @@ export default function CreateListing() {
     delete formDataCopy.images;
     !formDataCopy.offer && delete formDataCopy.discountedPrice;
 
-    const docRef = await addDoc(collection(db, 'listings'), formDataCopy);
-    toast.success('Post created successfully');
+    // ? ----------------- Update listings ------------------
+    // const docRef = await addDoc(collection(db, 'listings'), formDataCopy);
+    const docRef = doc(db, 'listings', params.listingId);
+    await updateDoc(docRef, formDataCopy);
+    toast.success('Post updated successfully');
     setLoading(false);
     navigate(`/category/${formDataCopy.type}/${docRef.id}`);
   };
@@ -259,6 +267,28 @@ export default function CreateListing() {
       }));
   };
 
+  // ! ------------------------- Fetching user's data for EDIT the listing details ---------------------------
+  useEffect(() => {
+    setPageLoading(true);
+    const fetchListing = async () => {
+      const docRef = doc(db, 'listings', params.listingId);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setListing(docSnap.data());
+        setFormData({ ...docSnap.data() });
+        setPageLoading(false);
+      } else {
+        navigate('/');
+        setTimeout(() => {
+          toast.error('The post does not exist');
+        }, 1400);
+        toast.error('Something went wrong');
+      }
+    };
+    fetchListing();
+  }, [params.listingId, navigate]);
+
+  // ! ------------------- sets userRef to logged in user --------------------
   useEffect(() => {
     if (_isMounted) {
       onAuthStateChanged(auth, (user) => {
@@ -275,22 +305,31 @@ export default function CreateListing() {
     };
   }, [_isMounted]);
 
-  // if (loading) {
-  //   return <ProfileLoading />;
-  // }
+  // ! ------------------------- Redirect if listing is not user's ---------------------------
+  useEffect(() => {
+    if (listing && listing.userRef !== auth.currentUser.uid) {
+      toast.error('You cannot edit this post');
+      navigate('/');
+    }
+  }, []);
+
+  if (pageLoading) {
+    return (
+      <div className="container">
+        <BackdropLoading />
+      </div>
+    );
+  }
 
   return (
     <div className="profile container">
-      {/* <header>
-        <p className="pageHeader">Add your property for sale or rent</p>
-      </header> */}
       <main>
         <Card color="transparent" shadow={false}>
           <Typography variant="h4" color="blue-gray">
-            List your property for sale or rent
+            Edit your post
           </Typography>
           <Typography color="gray" className="mt-1 font-normal">
-            To register, provide information about your property.
+            You can edit and update your post anytime.
           </Typography>
           <form
             onSubmit={onSubmit}
@@ -988,6 +1027,9 @@ export default function CreateListing() {
               >
                 <label htmlFor="imgSec">Images *</label>
                 <p>
+                  As you are editing the post you need to upload the images
+                  again.
+                  <br />
                   The first image will be used as the cover image for the post.
                   (max 6 images)
                 </p>
@@ -1007,10 +1049,10 @@ export default function CreateListing() {
             </div>
 
             {loading ? (
-              <ButtonLoading text="Creating post" />
+              <ButtonLoading text="Updating Post" />
             ) : (
               <Button type="submit" className="mt-6" fullWidth>
-                Create Post
+                Update Post
               </Button>
             )}
           </form>

@@ -52,10 +52,14 @@ import { TbRosetteDiscountCheckFilled } from 'react-icons/tb';
 //------------------ ANIMAL --------------------
 import { FaDog } from 'react-icons/fa6';
 
+//------------------ EDIT --------------------
+import { AiTwotoneEdit } from 'react-icons/ai';
+
 export default function ListingItems({
   listing,
   id,
   onDelete,
+  onEdit,
   renderedInProfilePage = false,
 }) {
   let discountedPrice = '0';
@@ -85,18 +89,32 @@ export default function ListingItems({
             <Typography variant="h5" color="blue-gray" className="font-medium">
               {listing.name}
             </Typography>
-            {/* ------------- DELETE BUTTON ------------- */}
-            {onDelete && (
-              <TP title="Delete this post">
-                <Typography
-                  color="blue-gray"
-                  className="flex justify-center items-center gap-1.5 font-normal cursor-pointer h-8 w-8 border border-blue-gray-700 rounded-full"
-                  onClick={() => onDelete(listing.id, listing.name)}
-                >
-                  <AiTwotoneDelete />
-                </Typography>
-              </TP>
-            )}
+            <div className="btn-div flex justify-center align-middle gap-2">
+              {/* ------------- EDIT BUTTON ------------- */}
+              {onEdit && (
+                <TP title="Edit this post">
+                  <Typography
+                    color="blue-gray"
+                    className="flex justify-center items-center gap-1.5 font-normal cursor-pointer h-8 w-8 border border-blue-gray-700 rounded-full"
+                    onClick={() => onEdit()}
+                  >
+                    <AiTwotoneEdit />
+                  </Typography>
+                </TP>
+              )}
+              {/* ------------- DELETE BUTTON ------------- */}
+              {onDelete && (
+                <TP title="Delete this post">
+                  <Typography
+                    color="blue-gray"
+                    className="flex justify-center items-center gap-1.5 font-normal cursor-pointer h-8 w-8 border border-blue-gray-700 rounded-full"
+                    onClick={() => onDelete(listing.id, listing.name)}
+                  >
+                    <AiTwotoneDelete />
+                  </Typography>
+                </TP>
+              )}
+            </div>
           </div>
           <Typography color="gray">
             <span className="text-gray-900 font-medium">Address:</span>{' '}
