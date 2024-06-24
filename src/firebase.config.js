@@ -7,7 +7,6 @@ const firebaseApiKey = import.meta.env.VITE_FIREBASE_API_KEY;
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    // apiKey: "AIzaSyDnTKhTqlhwpM8wrBU9LjZ9hfI1LYlP7kQ",
     apiKey: firebaseApiKey,
     authDomain: "real-estate-web-app-01.firebaseapp.com",
     projectId: "real-estate-web-app-01",
